@@ -2,8 +2,8 @@ set_xmakever("2.8.2")
 
 includes("libraries/commonlibsse-ng")
 
-set_project("Template")
-set_version("0.0.0")
+set_project("CraftingListCompactor")
+set_version("1.0.0")
 set_license("GPL-3.0")
 
 set_languages("c++23")
@@ -16,12 +16,12 @@ set_config("skyrim_vr", false)
 add_rules("mode.debug", "mode.releasedbg")
 add_rules("plugin.vsxmake.autoupdate")
 
-target("Template")
+target("CraftingListCompactor")
     add_deps("commonlibsse-ng")
 
     add_rules("commonlibsse-ng.plugin", {
-        name = "Template",
-        author = "AUTHOR_NAME",
+        name = "CraftingListCompactor",
+        author = "digital-apple",
         description = ""
     })
 
