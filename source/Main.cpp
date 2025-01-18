@@ -36,12 +36,42 @@ void InitializeLogger()
     spdlog::set_pattern("[%^%L%$] %v");
 }
 
+std::unordered_map<RE::FormID, std::vector<RE::FormID>> m;
+
 void HandleMessage(SKSE::MessagingInterface::Message* a_message)
 {
     switch (a_message->type) {
     case SKSE::MessagingInterface::kDataLoaded:
         {
             INFO("Hello, {}!", SKSE::PluginDeclaration::GetSingleton()->GetAuthor());
+
+            const auto data = RE::TESDataHandler::GetSingleton();
+
+            if (data) {
+                const auto& arr = data->GetFormArray<RE::BGSConstructibleObject>();
+
+                for (const auto& i : arr) {
+                    const auto id = i->createdItem ? i->createdItem->GetFormID() : 0x0;
+
+                    if (m.contains(id)) {
+                        auto& vec = m.at(id);
+
+                        vec.push_back(i->GetFormID());
+                    } else {
+                        m.emplace(id, std::vector{ i->GetFormID() });
+                    }
+                }
+
+                for (const auto& i : m) {
+                    INFO("K: <{:X}>", i.first);
+
+                    for (const auto& j : i.second) {
+                        INFO("V: <{:X}>", j);
+                    }
+
+                    INFO("");
+                }
+            }
         }
         break;
     }
